@@ -115,3 +115,6 @@ installationBundleBootcampPrep
 #  ----- Call the Installation Function -----      #
 # ==================================================
 doInstallation
+
+# Launch the simple node service running in container
+docker run -p 8070:8080 grabnerandi/simplenodeservice:1.0.0

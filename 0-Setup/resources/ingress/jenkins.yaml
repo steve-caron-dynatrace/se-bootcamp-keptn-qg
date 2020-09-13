@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    #cert-manager.io/cluster-issuer: "letsencrypt"
+  name: jenkins-ingress
+  namespace: jenkins
+spec:
+  rules:
+  - host: jenkins.domain.placeholder
+    http:
+      paths:
+      - backend:
+          serviceName: jenkins
+          servicePort: 8080
+        path: /
+  tls:
+  - hosts:
+    - jenkins.domain.placeholder
+    #secretName: jenkins-tls

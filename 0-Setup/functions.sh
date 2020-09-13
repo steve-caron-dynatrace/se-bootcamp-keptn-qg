@@ -12,15 +12,15 @@ KEPTN_VERSION=0.7.0
 KEPTN_DT_SERVICE_VERSION=0.8.0
 KEPTN_DT_SLI_SERVICE_VERSION=0.5.0
 KEPTN_EXAMPLES_BRANCH=0.7.0
-#TEASER_IMAGE="shinojosa/nginxacm:0.7"
+TEASER_IMAGE="shinojosa/nginxacm:0.7"
 KEPTN_BRIDGE_IMAGE="keptn/bridge2:20200326.0744"
 MICROK8S_CHANNEL="1.18/stable"
-KEPTN_IN_A_BOX_DIR="~/keptn-in-a-box"
+#KEPTN_IN_A_BOX_DIR="~/keptn-in-a-box"
 KEPTN_EXAMPLES_DIR="~/examples"
 KEPTN_IN_A_BOX_REPO="https://github.com/keptn-sandbox/keptn-in-a-box"
 
-KEPTN_IN_A_BOX_DIR="~/keptn-in-a-box"
-KEPTN_EXAMPLES_DIR="~/examples"
+KEPTN_IN_A_BOX_DIR="~/se-bootcamp-keptn-qg/0-Setup"
+REPO="https://github.com/steve-caron-dynatrace/se-bootcamp-keptn-qg.git"
 
 # - The user to run the commands from. Will be overwritten when executing this shell with sudo, this is just needed when spinning machines programatically and running the script with root without an interactive shell
 USER="ubuntu"
@@ -58,7 +58,6 @@ keptn_install_qualitygates=false
 keptn_examples_clone=false
 resources_clone=false
 
-
 dynatrace_savecredentials=false
 dynatrace_configure_monitoring=false
 dynatrace_activegate_install=false
@@ -76,6 +75,8 @@ expose_kubernetes_api=false
 expose_kubernetes_dashboard=false
 patch_kubernetes_dashboard=false
 create_workshop_user=false
+
+run_simple_node_service_container=false
 
 # ======================================================================
 #             ------- Installation Bundles  --------                   #
@@ -202,39 +203,41 @@ installationBundleBootcampPrep() {
   enable_k8dashboard=false
 
   setup_proaliases=true
-  istio_install=true
   keptn_install=true
-  keptn_examples_clone=true
-  resources_clone=true
+
+  # Let's try if this works
+  certmanager_install=true
+  certmanager_enable=true
+
+  ### I don't think we need those 
+  #keptn_examples_clone=true
+  #resources_clone=true
+
+  repo_clone=true
 
   expose_kubernetes_api=true
-  #expose_kubernetes_dashboard=true
 
   #keptndeploy_homepage=true
   create_workshop_user=true
 
-  # We dont need istio nor helm
+  # We dont need istio
   istio_install=false
-  helm_install=false
+
 
   # For the QualityGates we need both flags needs to be enabled
   keptn_install_qualitygates=true
 
+  # We need helm to deploy Jenkins
   helm_install=true
   jenkins_deploy=true
+
+  # this is to run the simple_node_service in a docker container directly on the host
+  run_simple_node_service_container=true
 
 selected_bundle="installationBundleBootcampPrep"
 
 }
 
-installationBundleBootcampDT() {
-
-  dynatrace_savecredentials=true
-  dynatrace_configure_monitoring=true
-
-selected_bundle="installationBundleBootcampDT"
-
-}
 
 # ======================================================================
 #          ------- Util Functions -------                              #
@@ -717,6 +720,25 @@ createWorkshopUser() {
   fi
 }
 
+repoClone() {
+  if [ "$repo_clone" = true ]; then
+    printInfoSection "Clone repo in home directory"
+    bashas "git clone $REPO"
+  fi
+}
+
+runSimpleNodeServiceContainer() {
+  if [ "$run_simple_node_service_container" = true ]; then
+    # Launch the simple node service running in container and exposing port 8070
+    docker run -d -p 8070:8080 --name simplenodeservice -e DT_TAGS=basicqg grabnerandi/simplenodeservice:1.0.0
+  fi
+}
+
+saveInfo() {
+  if [ "save_info = true" ]; then
+    
+}
+
 printInstalltime() {
   DURATION=$SECONDS
   printInfoSection "Installation complete :)"
@@ -741,8 +763,8 @@ printInstalltime() {
 
   if [ "$jenkins_deploy" = true ]; then
     printInfoSection "Jenkins-Server Access"
-    printInfo "Username: admin"
-    printInfo "Password: password"
+    printInfo "Username: keptn"
+    printInfo "Password: keptn"
   fi 
 
   if [ "$create_workshop_user" = true ]; then
@@ -755,7 +777,7 @@ printInstalltime() {
 
 printFlags() {
   printInfoSection "Function Flags values"
-  for i in {selected_bundle,verbose_mode,update_ubuntu,docker_install,microk8s_install,setup_proaliases,enable_k8dashboard,enable_registry,istio_install,helm_install,certmanager_install,certmanager_enable,keptn_install,keptn_install_qualitygates,keptn_examples_clone,resources_clone,dynatrace_savecredentials,dynatrace_configure_monitoring,dynatrace_activegate_install,dynatrace_configure_workloads,jenkins_deploy,keptn_bridge_disable_login,keptn_bridge_eap,keptndeploy_homepage,keptndemo_cartsload,keptndemo_unleash,keptndemo_cartsonboard,expose_kubernetes_api,expose_kubernetes_dashboard,patch_kubernetes_dashboard,create_workshop_user}; 
+  for i in {selected_bundle,verbose_mode,update_ubuntu,docker_install,microk8s_install,setup_proaliases,enable_k8dashboard,enable_registry,istio_install,helm_install,certmanager_install,certmanager_enable,keptn_install,keptn_install_qualitygates,keptn_examples_clone,resources_clone,dynatrace_savecredentials,dynatrace_configure_monitoring,dynatrace_activegate_install,dynatrace_configure_workloads,jenkins_deploy,keptn_bridge_disable_login,keptn_bridge_eap,keptndeploy_homepage,keptndemo_cartsload,keptndemo_unleash,keptndemo_cartsonboard,expose_kubernetes_api,expose_kubernetes_dashboard,patch_kubernetes_dashboard,create_workshop_user,repo_clone, run_simple_node_service_container}; 
   do 
     echo "$i = ${!i}"
   done
@@ -796,6 +818,7 @@ doInstallation() {
   istioInstall
   helmInstall
   certmanagerInstall
+  repoClone
   resourcesClone
   keptnExamplesClone
   dynatraceSaveCredentials
@@ -820,6 +843,9 @@ doInstallation() {
   
   createWorkshopUser
   certmanagerEnable
+
+  runSimpleNodeServiceContainer
+
   printInstalltime
 }
 

@@ -734,10 +734,6 @@ runSimpleNodeServiceContainer() {
   fi
 }
 
-saveInfo() {
-  if [ "save_info = true" ]; then
-    
-}
 
 printInstalltime() {
   DURATION=$SECONDS

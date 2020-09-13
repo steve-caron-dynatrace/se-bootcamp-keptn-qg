@@ -1,0 +1,40 @@
+---
+    spec_version: '0.1.0'
+    comparison:
+      compare_with: "single_result"
+      include_result_with_score: "pass"
+      aggregate_function: avg
+    objectives:
+      - sli: rt_svc_p95
+        weight: 2
+        pass:        # pass if (relative change <= 10% AND absolute value is < 800)
+          - criteria:
+              - "<=+10%" # relative values require a prefixed sign (plus or minus)
+              - "<800"   # absolute values only require a logical operator
+        warning:     # if the response time is below 800ms, the result should be a warning
+          - criteria:
+              - "<=1200"
+      - sli: throughput_svc
+        pass:
+          - criteria:
+            - ">=20"
+      - sli: error_rate_svc
+        weight: 2
+        pass:
+          - criteria:
+              - "<=1%"
+        warning:
+          - criteria:
+              - "<=2%"
+      - sli: rt_svc_p90
+      - sli: rt_svc_p50
+        weight: 2
+        pass:
+          - criteria:
+              - "<=+15%"
+        warning:
+          - criteria:
+              - "<=+20%"
+    total_score:
+      pass: "85%"
+      warning: "70%"

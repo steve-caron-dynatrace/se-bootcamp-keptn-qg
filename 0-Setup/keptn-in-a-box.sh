@@ -46,7 +46,7 @@ APITOKEN=
 # ==================================================
 #      ----- Functions Location -----                #
 # ==================================================
-FUNCTIONS_FILE_REPO="https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/0-Setup/functions.sh"
+FUNCTIONS_FILE_REPO="https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/0-Setup/functions.sh"
 
 ## ----  Write all output to the logfile ----
 if [ "$pipe_log" = true ] ; then

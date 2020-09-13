@@ -20,7 +20,7 @@ KEPTN_EXAMPLES_DIR="~/examples"
 KEPTN_IN_A_BOX_REPO="https://github.com/keptn-sandbox/keptn-in-a-box"
 
 KEPTN_IN_A_BOX_DIR="~/se-bootcamp-keptn-qg/0-Setup"
-REPO="https://github.com/steve-caron-dynatrace/se-bootcamp-keptn-qg.git"
+REPO="https://github.com/steve-caron-dynatrace/se-bootcamp-keptn-qg"
 
 # - The user to run the commands from. Will be overwritten when executing this shell with sudo, this is just needed when spinning machines programatically and running the script with root without an interactive shell
 USER="ubuntu"
@@ -724,7 +724,7 @@ createWorkshopUser() {
 repoClone() {
   if [ "$repo_clone" = true ]; then
     printInfoSection "Clone repo in home directory"
-    bashas "git clone $REPO"
+    bashas "git clone $REPO ~"
   fi
 }
 

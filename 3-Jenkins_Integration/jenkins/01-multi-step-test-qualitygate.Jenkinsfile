@@ -4,12 +4,12 @@ def keptn = new sh.keptn.Keptn()
 node {
     properties([
         parameters([
-         string(defaultValue: 'jenkins-qg', description: 'Name of your Keptn Project for Quality Gate Feedback ', name: 'Project', trim: false), 
-         string(defaultValue: 'qualitystage', description: 'Stage in your Keptn project used for for Quality Gate Feedback', name: 'Stage', trim: false), 
-         string(defaultValue: 'simplenodeservice', description: 'Servicename used to keep SLIs and SLOs', name: 'Service', trim: false),
-         choice(choices: ['dynatrace', 'prometheus',''], description: 'Select which monitoring tool should be configured as SLI provider', name: 'Monitoring', trim: false),
-         choice(choices: ['perftest','basic'], description: 'Decide which set of SLIs you want to evaluate. The sample comes with: basic and perftest', name: 'SLI'),
-         string(defaultValue: '<enter your sample app URL here>', description: 'URI of the application you want to run a test against', name: 'DeploymentURI', trim: false),
+//         string(defaultValue: 'jenkins-qg', description: 'Name of your Keptn Project for Quality Gate Feedback ', name: 'Project', trim: false), 
+//         string(defaultValue: 'qualitystage', description: 'Stage in your Keptn project used for for Quality Gate Feedback', name: 'Stage', trim: false), 
+//         string(defaultValue: 'simplenodeservice', description: 'Servicename used to keep SLIs and SLOs', name: 'Service', trim: false),
+//         choice(choices: ['dynatrace', 'prometheus',''], description: 'Select which monitoring tool should be configured as SLI provider', name: 'Monitoring', trim: false),
+//         choice(choices: ['perftest','basic'], description: 'Decide which set of SLIs you want to evaluate. The sample comes with: basic and perftest', name: 'SLI'),
+         string(defaultValue: 'http://simplenodeservice.default.svc.cluster.local', description: 'URI of the application you want to run a test against', name: 'DeploymentURI', trim: false),
          string(defaultValue: '/:homepage;/api/echo?text=Hello&sleep=500:echo;/api/version:version;/api/invoke?url=www.dynatrace.com:invoke', description: 'A semi-colon separated list of URIPaths:TestName tupples that the load test should generate load', name: 'URLPaths', trim: false),
          string(defaultValue: '1', description: 'How long shall we run load against the specified URL?', name: 'LoadTestTime'),
          string(defaultValue: '1000', description: 'Think time in ms (milliseconds) after each test cycle', name: 'ThinkTime'),
@@ -25,12 +25,38 @@ node {
         archiveArtifacts artifacts:'keptn/**/*.*'
 
         // Initialize the Keptn Project - ensures the Keptn Project is created with the passed shipyard
-        keptn.keptnInit project:"${params.Project}", service:"${params.Service}", stage:"${params.Stage}", monitoring:"${monitoring}" // , shipyard:'shipyard.yaml'
+        //keptn.keptnInit project:"${params.Project}", service:"${params.Service}", stage:"${params.Stage}", monitoring:"${monitoring}" // , shipyard:'shipyard.yaml'
+
+        keptn.keptnInit project:"jenkins-qg", service:"simplenodeservice", stage:"qualitystage", monitoring:"dynatrace" // , shipyard:'shipyard.yaml'
+
 
         // Upload all the files
         keptn.keptnAddResources('keptn/dynatrace/dynatrace.conf.yaml','dynatrace/dynatrace.conf.yaml')
         keptn.keptnAddResources('keptn/sli.yaml','dynatrace/sli.yaml')
         keptn.keptnAddResources('keptn/slo.yaml','slo.yaml')
+    }
+    stage('Deploy service'){
+        steps{
+            container('kubectl'){
+                echo Deployment simplenodeservice...
+                script{
+                    curl -o simplenodeservice-k8s.yaml https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/3-Jenkins_Integration/simplenodeservice-k8s.yaml
+                    kubectl apply -f $WORKSPACE/simplenodeservice-k8s.yaml
+                    kubectl get po
+                /*    if (params.BUILD == &quot;One&quot;) {
+                        sh &apos;ls $WORKSPACE&apos;
+                        sh &apos;kubectl apply -f $WORKSPACE/manifests/sockshop-app/dev/carts2.yml&apos;
+                        echo &quot;Waiting for carts service to start...&quot;
+                        sleep 350
+                    } else {
+                        sh &apos;ls $WORKSPACE&apos;
+                        sh &apos;kubectl apply -f $WORKSPACE/manifests/sockshop-app/canary/carts2-canary.yml&apos;
+                        echo &quot;Waiting for carts service to start...&quot;
+                        sleep 350
+                    } */
+                }
+            }
+        }
     }
     stage('Run simple load test') {
         echo "This is really just a very simple 'load simulated'. Dont try this at home :-)" 

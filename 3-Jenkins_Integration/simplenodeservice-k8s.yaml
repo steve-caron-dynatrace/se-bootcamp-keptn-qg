@@ -1,0 +1,58 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-simplenodeservice
+spec:
+  selector:
+    matchLabels:
+      app: simplenodeservice
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - name: simplenodeservice
+        image: grabnerandi/simplenodeservice:1.0.0
+        env:
+        - name: DT_TAGS
+          value: jenkinsqg
+        resources:
+          limits:
+            cpu: 500m
+            memory: 2048Mi
+          requests:
+            cpu: 400m
+            memory: 2048Mi
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 240
+          periodSeconds: 10
+          timeoutSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 240
+          periodSeconds: 10
+          timeoutSeconds: 15
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simplenodeservice
+  labels:
+    app: simplenodeservice
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  selector:
+    app: simplenodeservice
+  type: ClusterIP

@@ -3,6 +3,7 @@
 YLW='\033[1;33m'
 NC='\033[0m'
 FILE=~/.config/creds_dt.json
+CREDS='{ "dynatraceTenant": "", "dynatraceApiToken": "", "dynatracePaaSToken": "" }'
 
 readCredsFromFile() {
     if [ -f "$FILE" ]; then
@@ -35,8 +36,6 @@ writeCreadsToFile(){
         jq --arg DT_PAAS_TOKEN "$DT_PAAS_TOKEN" '.dynatracePaaSToken = $DT_PAAS_TOKEN')
         CREDS=$NEWCREDS
         echo $CREDS > $FILE
-	echo $DT_TENANT
-	echo $CREDS
         echo ""
         echo "The new credentials can be found here:" $FILE
         echo ""

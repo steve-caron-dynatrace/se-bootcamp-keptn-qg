@@ -38,7 +38,7 @@ node {
     stage('Deploy service'){
         steps{
             container('kubectl'){
-                echo Deployment simplenodeservice...
+                echo 'Deploying simplenodeservice...'
                 script{
                     curl -o simplenodeservice-k8s.yaml https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/3-Jenkins_Integration/simplenodeservice-k8s.yaml
                     kubectl apply -f $WORKSPACE/simplenodeservice-k8s.yaml

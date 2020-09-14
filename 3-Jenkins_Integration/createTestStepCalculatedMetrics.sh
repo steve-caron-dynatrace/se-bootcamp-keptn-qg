@@ -2,6 +2,11 @@
 
 # Usage:
 # ./createTestStepCalculatedMetrics.sh CONTEXTLESS keptn_project simpleproject
+
+source ../utils/utils.sh
+
+readCredsFromFile
+
 if [[ -z "$DT_TENANT" || -z "$DT_API_TOKEN" ]]; then
   echo "DT_TENANT & DT_API_TOKEN MUST BE SET!!"
   exit 1

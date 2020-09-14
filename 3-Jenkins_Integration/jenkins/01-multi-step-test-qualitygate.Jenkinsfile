@@ -36,26 +36,21 @@ node {
         keptn.keptnAddResources('keptn/slo.yaml','slo.yaml')
     }
     stage('Deploy service'){
-        steps{
-            container('kubectl'){
-                echo 'Deploying simplenodeservice...'
-                script{
-                    sh 'curl -o simplenodeservice-k8s.yaml https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/3-Jenkins_Integration/simplenodeservice-k8s.yaml'
-                    sh 'kubectl apply -f $WORKSPACE/simplenodeservice-k8s.yaml'
-                    sh 'kubectl get po'
-                /*    if (params.BUILD == &quot;One&quot;) {
-                        sh &apos;ls $WORKSPACE&apos;
-                        sh &apos;kubectl apply -f $WORKSPACE/manifests/sockshop-app/dev/carts2.yml&apos;
-                        echo &quot;Waiting for carts service to start...&quot;
-                        sleep 350
-                    } else {
-                        sh &apos;ls $WORKSPACE&apos;
-                        sh &apos;kubectl apply -f $WORKSPACE/manifests/sockshop-app/canary/carts2-canary.yml&apos;
-                        echo &quot;Waiting for carts service to start...&quot;
-                        sleep 350
-                    } */
-                }
-            }
+        script{
+            sh 'curl -o simplenodeservice-k8s.yaml https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/3-Jenkins_Integration/simplenodeservice-k8s.yaml'
+            sh 'kubectl apply -f $WORKSPACE/simplenodeservice-k8s.yaml'
+            sh 'kubectl get po'
+        /*    if (params.BUILD == &quot;One&quot;) {
+                sh &apos;ls $WORKSPACE&apos;
+                sh &apos;kubectl apply -f $WORKSPACE/manifests/sockshop-app/dev/carts2.yml&apos;
+                echo &quot;Waiting for carts service to start...&quot;
+                sleep 350
+            } else {
+                sh &apos;ls $WORKSPACE&apos;
+                sh &apos;kubectl apply -f $WORKSPACE/manifests/sockshop-app/canary/carts2-canary.yml&apos;
+                echo &quot;Waiting for carts service to start...&quot;
+                sleep 350
+            } */
         }
     }
     stage('Run simple load test') {

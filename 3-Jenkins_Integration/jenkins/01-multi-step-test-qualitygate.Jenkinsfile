@@ -37,9 +37,9 @@ node {
     }
     stage('Deploy service'){
         script{
-            sh 'curl -o simplenodeservice-k8s.yaml https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/3-Jenkins_Integration/simplenodeservice-k8s.yaml'
-            sh 'kubectl apply -f $WORKSPACE/simplenodeservice-k8s.yaml'
-            sh 'kubectl get po'
+            curl -o simplenodeservice-k8s.yaml https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/3-Jenkins_Integration/simplenodeservice-k8s.yaml
+            kubectl apply -f $WORKSPACE/simplenodeservice-k8s.yaml
+            kubectl get po
         /*    if (params.BUILD == &quot;One&quot;) {
                 sh &apos;ls $WORKSPACE&apos;
                 sh &apos;kubectl apply -f $WORKSPACE/manifests/sockshop-app/dev/carts2.yml&apos;

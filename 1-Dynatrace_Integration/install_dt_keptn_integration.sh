@@ -10,5 +10,3 @@ kubectl -n keptn create secret generic dynatrace --from-literal="DT_TENANT=$DT_T
 # deploy Dynatrace Integration service
 kubectl apply -f https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.8.0/deploy/service.yaml
 
-# configure Dynatrace for keptn
-#keptn configure monitoring dynatrace

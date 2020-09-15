@@ -41,7 +41,7 @@
         pass:
           - criteria:
               - "<=+10%"
-              - "<1200000"
+              - "<120000"
       - sli: rt_test_echo
         pass:
           - criteria:

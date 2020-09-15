@@ -4,15 +4,10 @@ def keptn = new sh.keptn.Keptn()
 node {
     properties([
         parameters([
-//         string(defaultValue: 'jenkins-qg', description: 'Name of your Keptn Project for Quality Gate Feedback ', name: 'Project', trim: false), 
-//         string(defaultValue: 'qualitystage', description: 'Stage in your Keptn project used for for Quality Gate Feedback', name: 'Stage', trim: false), 
-//         string(defaultValue: 'simplenodeservice', description: 'Servicename used to keep SLIs and SLOs', name: 'Service', trim: false),
-//         choice(choices: ['dynatrace', 'prometheus',''], description: 'Select which monitoring tool should be configured as SLI provider', name: 'Monitoring', trim: false),
-//         choice(choices: ['perftest','basic'], description: 'Decide which set of SLIs you want to evaluate. The sample comes with: basic and perftest', name: 'SLI'),
-         string(defaultValue: 'http://simplenodeservice.default.svc.cluster.local', description: 'URI of the application you want to run a test against', name: 'DeploymentURI', trim: false),
-         string(defaultValue: '/:homepage;/api/echo?text=Hello&sleep=500:echo;/api/version:version;/api/invoke?url=www.dynatrace.com:invoke', description: 'A semi-colon separated list of URIPaths:TestName tupples that the load test should generate load', name: 'URLPaths', trim: false),
-         string(defaultValue: '1', description: 'How long shall we run load against the specified URL?', name: 'LoadTestTime'),
-         string(defaultValue: '1000', description: 'Think time in ms (milliseconds) after each test cycle', name: 'ThinkTime'),
+         string(defaultValue: "http://<NIP_IO_DOMAIN>:8090", description: 'URL of the application you want to run a test against', name: 'DeploymentURI', trim: false),
+         choice(choices: ['Build 1', 'Build 2', 'Build 3'], description: 'Select which build you want to test', name: 'Build', trim: false),
+         string(defaultValue: '2', description: 'How long shall we run load against the specified URL?', name: 'LoadTestTime'),
+         string(defaultValue: '5000', description: 'Think time in ms (milliseconds) after each test cycle', name: 'ThinkTime'),
          string(defaultValue: '3', description: 'How many minutes to wait after load test is complete until Keptn is done? 0 to not wait', name: 'WaitForResult'),
         ])
     ])
@@ -20,7 +15,7 @@ node {
     stage('Initialize Keptn') {
         // keptn.downloadFile("https://raw.githubusercontent.com/keptn-sandbox/performance-testing-as-selfservice-tutorial/master/shipyard.yaml", 'keptn/shipyard.yaml')
         keptn.downloadFile("https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/3-Jenkins_Integration/dynatrace/dynatrace.conf.yaml", 'keptn/dynatrace/dynatrace.conf.yaml')
-        keptn.downloadFile("https://raw.githubusercontent.com/keptn-sandbox/keptn-in-a-box/master/resources/jenkins/pipelines/keptn/slo_perftest.yaml", 'keptn/slo.yaml')
+        keptn.downloadFile("https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/3-Jenkins_Integration/slo_perftest.yaml", 'keptn/slo.yaml')
         keptn.downloadFile("https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/3-Jenkins_Integration/dynatrace/sli_perftest.yaml", 'keptn/sli.yaml')
         archiveArtifacts artifacts:'keptn/**/*.*'
 
@@ -35,32 +30,31 @@ node {
         keptn.keptnAddResources('keptn/sli.yaml','dynatrace/sli.yaml')
         keptn.keptnAddResources('keptn/slo.yaml','slo.yaml')
     }
-    stage('Deploy service'){
-        script{
-            curl -o simplenodeservice-k8s.yaml https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/3-Jenkins_Integration/simplenodeservice-k8s.yaml
-            kubectl apply -f $WORKSPACE/simplenodeservice-k8s.yaml
-            kubectl get po
-        /*    if (params.BUILD == &quot;One&quot;) {
-                sh &apos;ls $WORKSPACE&apos;
-                sh &apos;kubectl apply -f $WORKSPACE/manifests/sockshop-app/dev/carts2.yml&apos;
-                echo &quot;Waiting for carts service to start...&quot;
-                sleep 350
-            } else {
-                sh &apos;ls $WORKSPACE&apos;
-                sh &apos;kubectl apply -f $WORKSPACE/manifests/sockshop-app/canary/carts2-canary.yml&apos;
-                echo &quot;Waiting for carts service to start...&quot;
-                sleep 350
-            } */
-        }
-    }
     stage('Run simple load test') {
         echo "This is really just a very simple 'load simulated'. Dont try this at home :-)" 
         echo "For real testing - please use A REAL load testing tool in your pipeline such us JMeter, Neoload, Gatling ... - but - this is good for this demo"
-
+        
+        def URLPaths = ""
+        
+        switch (params.Build) {
+            case "Build 1" : 
+                URLPaths = "/,homepage;/api/echo?text=Hello&sleep=500,echo;/api/version,version;/api/invoke?url=https://www.dynatrace.com,invoke";
+                break;
+            case "Build 2" :
+                URLPaths = "/,homepage;/api/echo?text=Hello&sleep=700,echo;/api/version,version;/api/invoke?url=https://www.dynatrace.com,invoke;/api/invoke?url=http://www.keptn.sh,invoke";
+                break;
+            case "Build 3" :
+                URLPaths = "/,homepage;/api/echo?text=Hello&sleep=800,echo;/api/version&sleep=800,version;/api/invoke?url=https://www.dynatrace.com,invoke;/api/invoke?url=https://www.theroar.com.au,invoke";
+                break;
+            default :
+                URLPaths = "/,homepage;/api/echo?text=Hello&sleep=500,echo;/api/version,version;/api/invoke?url=https://www.dynatrace.com,invoke";
+                break;
+        }
+        
         def loadTestTime = params.LoadTestTime?:"3"
-        def thinkTime = params.ThinkTime?:200
+        def thinkTime = params.ThinkTime?:2000
         def url = "${params.DeploymentURI}"
-        def urlPaths = params.URLPaths?:"/"
+        def urlPaths = URLPaths?:"/"
         def urlPathValues = urlPaths.tokenize(';')
 
         // Before we get started we mark the current timestamp which allows us to run the quality gate later on with exact timestamp info
@@ -74,8 +68,8 @@ node {
             while (runTestUntil.compareTo(java.time.LocalDateTime.now()) >= 1) {
                 // we loop through every URL that has been passed
                 for (i=0;i<urlPathValues.size();i++) {
-                    urlPath = urlPathValues[i].tokenize(':')[0]
-                    testStepName = urlPathValues[i].tokenize(':')[1]
+                    urlPath = urlPathValues[i].tokenize(',')[0]
+                    testStepName = urlPathValues[i].tokenize(',')[1]
 
                     // Sends the request to the URL + Path and also send some x-dynatrace-test HTTP Headers: 
                     // TSN=Test Step Name, LSN=Load Script Name, LTN=Load Test Name

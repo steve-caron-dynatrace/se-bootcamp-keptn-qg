@@ -206,9 +206,9 @@ installationBundleBootcampPrep() {
   setup_proaliases=true
   keptn_install=true
 
-  # Let's try if this works
-  certmanager_install=true
-  certmanager_enable=true
+  # Need to fix for nodeJS app
+  #certmanager_install=true
+  #certmanager_enable=true
 
   ### I don't think we need those 
   #keptn_examples_clone=true

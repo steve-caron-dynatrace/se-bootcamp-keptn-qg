@@ -41,7 +41,7 @@
         pass:
           - criteria:
               - "<=+10%"
-              - "<1200"
+              - "<1200000"
       - sli: rt_test_echo
         pass:
           - criteria:
@@ -54,7 +54,7 @@
         pass:
            - criteria:
               - "<=+15%"
-              - "<100"
+              - "<10000"
       - sli: svcalls_test_invoke
         pass:
           - criteria:

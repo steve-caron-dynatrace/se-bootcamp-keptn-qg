@@ -46,5 +46,7 @@ else
 
   keptn send event start-evaluation --project=standalone-qg --stage=qualitystage --service=simplenodeservice --timeframe=2m --labels=gaterun=3,type=viacli
 
+  sleep 60s
+
   echo DONE!
 fi

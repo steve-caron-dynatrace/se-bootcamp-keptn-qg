@@ -111,7 +111,7 @@ function createCalculatedTestMetric() {
 ###########################################################################
 # 1: we create Test Step Response Time
 ###########################################################################
-createCalculatedTestMetric "calc:service.teststepresponsetime" "Test Step Response Time" "RESPONSE_TIME" "MICRO_SECOND" "Test Step" "{RequestAttribute:TSN}" "SUM"
+createCalculatedTestMetric "calc:service.teststepresponsetime" "Test Step Response Time" "RESPONSE_TIME" "MILLI_SECOND" "Test Step" "{RequestAttribute:TSN}" "AVERAGE"
 
 ###########################################################################
 # 2: we create Test Step Service Calls

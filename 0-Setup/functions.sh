@@ -207,8 +207,8 @@ installationBundleBootcampPrep() {
   keptn_install=true
 
   # Need to fix for nodeJS app
-  #certmanager_install=true
-  #certmanager_enable=true
+  certmanager_install=true
+  certmanager_enable=true
 
   ### I don't think we need those 
   #keptn_examples_clone=true

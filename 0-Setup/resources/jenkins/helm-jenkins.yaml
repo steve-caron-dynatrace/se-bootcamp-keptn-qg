@@ -268,8 +268,7 @@ master:
     configScripts:
       welcome-message: |
        jenkins:
-         systemMessage:   🚀 Welcome to your Keptn in a Box 📦 CI\CD server! 
-                        This Jenkins is configured and managed 'as code' 🛠
+         systemMessage:   This Jenkins is configured and managed 'as code' 🛠             
          globalNodeProperties:
          - envVars:
              env:
@@ -283,70 +282,33 @@ master:
        unclassified: 
          globalLibraries:
            libraries:
-           - defaultVersion: "master"
+           - defaultVersion: "3.2"
              name: "keptn-library"
              retriever:
                modernSCM:
                  scm:
                    git:
                      remote: "http://github.com/keptn-sandbox/keptn-jenkins-library.git"
-      pipeline-qualitygates:  | 
-        jobs:
-          - script: >
-              pipelineJob('01-qualitygate-evaluation') {
-                definition {
-                  cpsScm {
-                    scm {
-                      git {
-                        remote {
-                          url('http://github.com/keptn-sandbox/keptn-in-a-box.git')
-                        }
-                        branch('*/master')
-                      }
-                    }
-                    scriptPath 'resources/jenkins/pipelines/01-qualitygate-evaluation.Jenkinsfile'
-                    lightweight()
-                  }
-                }
-              }
       pipeline-qualitygates-test:  | 
         jobs:
           - script: >
-              pipelineJob('02-simpletest-qualitygate') {
+              pipelineJob('01-multi-step-test-qualitygate') {
                 definition {
                   cpsScm {
                     scm {
                       git {
                         remote {
-                          url('http://github.com/keptn-sandbox/keptn-in-a-box.git') 
+                          url('http://github.com/steve-caron-dynatrace/se-bootcamp-keptn-qg.git') 
                         }
                         branch('*/master')
                       }
                     }
-                    scriptPath 'resources/jenkins/pipelines/02-simpletest-qualitygate.Jenkinsfile'
+                    scriptPath '3-Jenkins_Integration/jenkins/01-multi-step-test-qualitygate.Jenkinsfile'
                     lightweight()
                   }
                 }
               }
-      pipeline-qualitygates-performance:  | 
-        jobs:
-          - script: >
-              pipelineJob('03-performancetest-qualitygate') {
-                definition {
-                  cpsScm {
-                    scm {
-                      git {
-                        remote {
-                          url('http://github.com/keptn-sandbox/keptn-in-a-box.git')
-                        }
-                        branch('*/master')
-                      }
-                    }
-                    scriptPath 'resources/jenkins/pipelines/03-performancetest-qualitygate.Jenkinsfile'
-                    lightweight()
-                  }
-                }
-              }       
+    
   # Optionally specify additional init-containers
   customInitContainers: []
   # - name: custom-init

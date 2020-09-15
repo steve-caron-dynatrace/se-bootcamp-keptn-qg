@@ -19,10 +19,9 @@ node {
         keptn.downloadFile("https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/3-Jenkins_Integration/dynatrace/sli_perftest.yaml", 'keptn/sli.yaml')
         archiveArtifacts artifacts:'keptn/**/*.*'
 
-        // Initialize the Keptn Project - ensures the Keptn Project is created with the passed shipyard
-        //keptn.keptnInit project:"${params.Project}", service:"${params.Service}", stage:"${params.Stage}", monitoring:"${monitoring}" // , shipyard:'shipyard.yaml'
+        // Initialize the Keptn Project
 
-        keptn.keptnInit project:"jenkins-qg", service:"simplenodeservice", stage:"qualitystage", monitoring:"dynatrace" // , shipyard:'shipyard.yaml'
+        keptn.keptnInit project:"jenkins-qg", service:"simplenodeservice", stage:"qualitystage", monitoring:"dynatrace" 
 
 
         // Upload all the files

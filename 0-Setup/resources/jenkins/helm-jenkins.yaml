@@ -308,7 +308,25 @@ master:
                   }
                 }
               }
-    
+      pipeline-qualitygates-performance:  | 
+        jobs:
+          - script: >
+              pipelineJob('02-performanceaas-jmeter-qualitygate') {
+                definition {
+                  cpsScm {
+                    scm {
+                      git {
+                        remote {
+                          url('http://github.com/steve-caron-dynatrace/se-bootcamp-keptn-qg.git')
+                        }
+                        branch('*/master')
+                      }
+                    }
+                    scriptPath '4-Performance-as-a-Service/jenkins/02-performanceaas-jmeter.Jenkinsfile'
+                    lightweight()
+                  }
+                }
+              }       
   # Optionally specify additional init-containers
   customInitContainers: []
   # - name: custom-init

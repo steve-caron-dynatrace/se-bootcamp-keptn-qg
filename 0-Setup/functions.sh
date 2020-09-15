@@ -731,7 +731,8 @@ repoClone() {
 runSimpleNodeServiceContainer() {
   if [ "$run_simple_node_service_container" = true ]; then
     # Launch the simple node service running in container and exposing port 8070
-    docker run -d -p 8070:8080 --name simplenodeservice -e DT_TAGS=basicqg grabnerandi/simplenodeservice:1.0.0
+    docker run -d -p 8070:8080 --name simplenodeservice -e DT_TAGS="basicqg" grabnerandi/simplenodeservice:1.0.0
+    docker run -d -p 8090:8080 --name simplenodeservice-jenkins -e DT_TAGS="jenkinsqg" grabnerandi/simplenodeservice:1.0.0
   fi
 }
 

@@ -34,8 +34,7 @@ FUNCTIONS_FILE='functions.sh'
 # ---- Workshop User  ---- 
 # The flag 'create_workshop_user'=true is per default set to false. If it's set to to it'll clone the home directory from USER and allow SSH login with the given text password )
 NEWUSER=bootcamp
-INSTANCE_NO=$(hostname | grep -Eo '[0-9]+$')
-NEWPWD=keptn$INSTANCE_NO-R0ck$
+NEWPWD=keptn-R0ck$
 
 # ---- Define Dynatrace Environment ---- 
 # Sample: https://{your-domain}/e/{your-environment-id} for managed or https://{your-environment-id}.live.dynatrace.com for SaaS

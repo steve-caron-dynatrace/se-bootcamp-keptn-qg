@@ -9,3 +9,7 @@ wget -O Dynatrace-OneAgent-Linux.sh "https://$DT_TENANT/api/v1/deployment/instal
 sudo /bin/sh Dynatrace-OneAgent-Linux.sh --set-app-log-content-access=true --set-infra-only=false 
 
 rm Dynatrace-OneAgent-Linux.sh
+
+# restarting our app containers
+docker restart simplenodeservice
+docker restart simplenodeservice-jenkins

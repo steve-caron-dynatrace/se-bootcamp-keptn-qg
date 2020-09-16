@@ -4,23 +4,22 @@ def keptn = new sh.keptn.Keptn()
 node {
     properties([
         parameters([
-         choice(choices: ['performance', 'performance_10', 'performance_50', 'performance_100', 'performance_long'], description: 'Test Strategy aka Workload, e.g: performance, performance_10, performance_50, performance_100, performance_long', name: 'TestStrategy', trim: false),         choice(choices: ['perftest','basic'], description: 'Decide which set of SLIs you want to evaluate. The sample comes with: basic and perftest', name: 'SLI'),
+         choice(choices: ['performance', 'performance_10', 'performance_50', 'performance_100', 'performance_long'], description: 'Test Strategy aka Workload, e.g: performance, performance_10, performance_50, performance_100, performance_long', name: 'TestStrategy', trim: false),
          string(defaultValue: 'http://<NIP_IO_DOMAIN>:8090', description: 'URI of the application you want to run a test against', name: 'DeploymentURI', trim: false),
-         string(defaultValue: '60', description: 'How many minutes to wait until Keptn is done? 0 to not wait', name: 'WaitForResult'),
+         string(defaultValue: '5', description: 'How many minutes to wait until Keptn is done? 0 to not wait', name: 'WaitForResult'),
         ])
     ])
 
     stage('Initialize Keptn') {
         // keptn.downloadFile('https://raw.githubusercontent.com/keptn-sandbox/performance-testing-as-selfservice-tutorial/master/shipyard.yaml', 'keptn/shipyard.yaml')
-        keptn.downloadFile("https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/3-Jenkins_Integration/dynatrace/dynatrace.conf.yaml", 'keptn/dynatrace/dynatrace.conf.yaml')
-        keptn.downloadFile("https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/3-Jenkins_Integration/slo_perftest.yaml", 'keptn/slo.yaml')
-        keptn.downloadFile("https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/3-Jenkins_Integration/dynatrace/sli_perftest.yaml", 'keptn/sli.yaml')
-        keptn.downloadFile('https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/0-Setup/resources/jenkins/pipelines/keptn/jmeter/load.jmx', 'keptn/jmeter/load.jmx')
-        keptn.downloadFile('https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/0-Setup/resources/jenkins/pipelines/keptn/jmeter/jmeter.conf.yaml', 'keptn/jmeter/jmeter.conf.yaml')
+        keptn.downloadFile("https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/test-jmeter/4-Performance-as-a-Service/dynatrace/dynatrace.conf.yaml", 'keptn/dynatrace/dynatrace.conf.yaml')
+        keptn.downloadFile("https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/test-jmeter/4-Performance-as-a-Service/slo_perftest.yaml", 'keptn/slo.yaml')
+        keptn.downloadFile("https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/test-jmeter/4-Performance-as-a-Service/dynatrace/sli_perftest.yaml", 'keptn/sli.yaml')
+        keptn.downloadFile('https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/test-jmeter/4-Performance-as-a-Service/jmeter/load.jmx', 'keptn/jmeter/load.jmx')
+        keptn.downloadFile('https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/test-jmeter/4-Performance-as-a-Service/jmeter/jmeter.conf.yaml', 'keptn/jmeter/jmeter.conf.yaml')
         archiveArtifacts artifacts:'keptn/**/*.*'
 
         // Initialize the Keptn Project
-        //keptn.keptnInit project:"${params.Project}", service:"${params.Service}", stage:"${params.Stage}", monitoring:"${monitoring}" // , shipyard:'shipyard.yaml'
         keptn.keptnInit project:"jenkins-jmx-qg", service:"simplenodeservice", stage:"performancestage", monitoring:"dynatrace"
 
 

@@ -100,7 +100,7 @@ node {
         }
 
         if(waitTime > 0) {
-            echo "Waiting until Keptn is done and returns the results"
+            echo "Waiting until " + waitTime.toString() + "minutes or until Keptn is done and returns the results"
             def result = keptn.waitForEvaluationDoneEvent setBuildResult:true, waitTime:waitTime
             echo "${result}"
         } else {

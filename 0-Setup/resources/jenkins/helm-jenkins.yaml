@@ -215,11 +215,11 @@ master:
   installPlugins:
     - http_request:1.8.26
     - pipeline-utility-steps:2.6.1
-    - blueocean:1.23.1
+    - blueocean:1.24.3
     - kubernetes:1.26.4
-    - configuration-as-code:1.42
+    - configuration-as-code:1.46
     - job-dsl:1.77
-    - workflow-job:2.39
+    - workflow-job:2.40
     - workflow-aggregator:2.6
     - rebuild:1.31
     - jdk-tool:1.4
@@ -268,7 +268,8 @@ master:
     configScripts:
       welcome-message: |
        jenkins:
-         systemMessage:   This Jenkins is configured and managed 'as code' 🛠             
+         systemMessage:   🚀 Welcome to your Keptn in a Box 📦 CI\CD server! 
+                        This Jenkins is configured and managed 'as code' 🛠
          globalNodeProperties:
          - envVars:
              env:
@@ -326,7 +327,7 @@ master:
                     lightweight()
                   }
                 }
-              }       
+              }                      
   # Optionally specify additional init-containers
   customInitContainers: []
   # - name: custom-init

@@ -6,11 +6,11 @@ indicators:
   rt_svc_p50:               "metricSelector=builtin:service.response.time:merge(0):percentile(50)&entitySelector=tag($svc_tag),type(SERVICE)"
   rt_svc_p90:               "metricSelector=builtin:service.response.time:merge(0):percentile(90)&entitySelector=tag($svc_tag),type(SERVICE)"
   rt_svc_p95:               "metricSelector=builtin:service.response.time:merge(0):percentile(95)&entitySelector=tag($svc_tag),type(SERVICE)"
-  rt_test_invoke:           'metricSelector=calc:service.teststepresponsetime:filter(eq("Test Step","invoke")):avg&entitySelector=tag($svc_tag),type(SERVICE)'
+  rt_test_invoke:           "metricSelector=calc:service.teststepresponsetime:filter(eq(testname,invoke)):avg&entitySelector=tag($svc_tag),type(SERVICE)"
   rt_test_echo:             "metricSelector=calc:service.teststepresponsetime:filter(eq(Test Step,echo)):merge(0):avg&entitySelector=tag($svc_tag),type(SERVICE)"
   rt_test_version:          "metricSelector=calc:service.teststepresponsetime:filter(eq(Test Step,version)):merge(0):avg&entitySelector=tag($svc_tag),type(SERVICE)"
   rt_test_homepage:         "metricSelector=calc:service.teststepresponsetime:filter(eq(Test Step,homepage)):merge(0):avg&entitySelector=tag($svc_tag),type(SERVICE)"
-  svcalls_test_invoke:      "metricSelector=calc:service.teststepservicecalls:filter(eq(Test Step,invoke)):merge(0):sum&entitySelector=tag($svc_tag),type(SERVICE)"
+  svcalls_test_invoke:      "metricSelector=calc:service.teststepservicecalls2:filter(eq(testname,invoke)):sum&entitySelector=tag($svc_tag),type(SERVICE)"
   svcalls_test_echo:        "metricSelector=calc:service.teststepservicecalls:filter(eq(Test Step,echo)):merge(0):sum&entitySelector=tag($svc_tag),type(SERVICE)"
   svcalls_test_version:     "metricSelector=calc:service.teststepservicecalls:filter(eq(Test Step,version)):merge(0):sum&entitySelector=tag($svc_tag),type(SERVICE)"
   svcalls_test_homepage:    "metricSelector=calc:service.teststepservicecalls:filter(eq(Test Step,homepage)):merge(0):sum&entitySelector=tag($svc_tag),type(SERVICE)"

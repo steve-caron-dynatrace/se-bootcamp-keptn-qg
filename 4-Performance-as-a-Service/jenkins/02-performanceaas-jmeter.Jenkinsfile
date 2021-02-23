@@ -14,7 +14,7 @@ node {
         // keptn.downloadFile('https://raw.githubusercontent.com/keptn-sandbox/performance-testing-as-selfservice-tutorial/master/shipyard.yaml', 'keptn/shipyard.yaml')
         keptn.downloadFile("https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/4-Performance-as-a-Service/dynatrace/dynatrace.conf.yaml", 'keptn/dynatrace/dynatrace.conf.yaml')
         keptn.downloadFile("https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/4-Performance-as-a-Service/slo_perftest.yaml", 'keptn/slo.yaml')
-        keptn.downloadFile("https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/4-Performance-as-a-Service/dynatrace/sli_perftest.yaml", 'keptn/sli.yaml')
+        keptn.downloadFile("https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/test/4-Performance-as-a-Service/dynatrace/sli_perftest.yaml", 'keptn/sli.yaml')
         keptn.downloadFile('https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/4-Performance-as-a-Service/jmeter/load.jmx', 'keptn/jmeter/load.jmx')
         keptn.downloadFile('https://raw.githubusercontent.com/steve-caron-dynatrace/se-bootcamp-keptn-qg/master/4-Performance-as-a-Service/jmeter/jmeter.conf.yaml', 'keptn/jmeter/jmeter.conf.yaml')
         archiveArtifacts artifacts:'keptn/**/*.*'

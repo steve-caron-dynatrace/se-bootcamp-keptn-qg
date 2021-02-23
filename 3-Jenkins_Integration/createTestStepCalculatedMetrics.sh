@@ -33,7 +33,7 @@ read -rsp $'Press ctrl-c to abort. Press any key to continue...\n' -n1 key
 ####################################################################################################################
 ## createCalculatedTestMetric(METRICKEY, METRICNAME, BASEMETRIC, METRICUNIT, DIMENSION_NAME, DIMENSION_PATTERN, DIMENSION_AGGREGATE)
 ####################################################################################################################
-# Example: createCalculatedTestMetric "calc:service.teststepresponsetime" "Test Step Response Time" "RESPONSE_TIME" "MICRO_SECOND" "Test Step" "{RequestAttribute:TSN}" "SUM"
+# Example: createCalculatedTestMetric "calc:service.teststepresponsetime" "Test Step Response Time" "RESPONSE_TIME" "MICRO_SECOND" "TestStep" "{RequestAttribute:TSN}" "SUM"
 # Full List of possible BASEMETRICS: CPU_TIME, DATABASE_CHILD_CALL_COUNT, DATABASE_CHILD_CALL_TIME, EXCEPTION_COUNT, FAILED_REQUEST_COUNT, FAILED_REQUEST_COUNT_CLIENT, FAILURE_RATE, FAILURE_RATE_CLIENT, HTTP_4XX_ERROR_COUNT, HTTP_4XX_ERROR_COUNT_CLIENT, HTTP_5XX_ERROR_COUNT, HTTP_5XX_ERROR_COUNT_CLIENT, IO_TIME, LOCK_TIME, NON_DATABASE_CHILD_CALL_COUNT, NON_DATABASE_CHILD_CALL_TIME, REQUEST_ATTRIBUTE, REQUEST_COUNT, RESPONSE_TIME, RESPONSE_TIME_CLIENT, SUCCESSFUL_REQUEST_COUNT, SUCCESSFUL_REQUEST_COUNT_CLIENT, TOTAL_PROCESSING_TIME, WAIT_TIME
 # Possible METRICUNIT values: MILLI_SECOND, MICRO_SECOND, COUNT, PERCENT 
 # Possible DIMENSION_AGGREGATE: AVERAGE, COUNT, MAX, MIN, OF_INTEREST_RATIO, OTHER_RATIO, SINGLE_VALUE, SUM
@@ -111,22 +111,22 @@ function createCalculatedTestMetric() {
 ###########################################################################
 # 1: we create Test Step Response Time
 ###########################################################################
-createCalculatedTestMetric "calc:service.teststepresponsetime" "Test Step Response Time" "RESPONSE_TIME" "MICRO_SECOND" "Test Step" "{RequestAttribute:TSN}" "AVERAGE"
+createCalculatedTestMetric "calc:service.teststepresponsetime" "Test Step Response Time" "RESPONSE_TIME" "MICRO_SECOND" "TestStep" "{RequestAttribute:TSN}" "AVERAGE"
 
 ###########################################################################
 # 2: we create Test Step Service Calls
 ###########################################################################
-createCalculatedTestMetric "calc:service.teststepservicecalls" "Test Step Service Calls" "NON_DATABASE_CHILD_CALL_COUNT" "COUNT" "Test Step" "{RequestAttribute:TSN}" "SUM"
+createCalculatedTestMetric "calc:service.teststepservicecalls" "Test Step Service Calls" "NON_DATABASE_CHILD_CALL_COUNT" "COUNT" "TestStep" "{RequestAttribute:TSN}" "SUM"
 
 ###########################################################################
 # 3: we create Test Step Database Calls
 ###########################################################################
-createCalculatedTestMetric "calc:service.teststepdbcalls" "Test Step DB Calls" "DATABASE_CHILD_CALL_COUNT" "COUNT" "Test Step" "{RequestAttribute:TSN}" "SUM"
+createCalculatedTestMetric "calc:service.teststepdbcalls" "Test Step DB Calls" "DATABASE_CHILD_CALL_COUNT" "COUNT" "TestStep" "{RequestAttribute:TSN}" "SUM"
 
 ###########################################################################
 # 4: we create Test Step Failurerate
 ###########################################################################
-createCalculatedTestMetric "calc:service.teststepfailurerate" "Test Step Failure Rate" "FAILURE_RATE" "PERCENT" "Test Step" "{RequestAttribute:TSN}" "OF_INTEREST_RATIO"
+createCalculatedTestMetric "calc:service.teststepfailurerate" "Test Step Failure Rate" "FAILURE_RATE" "PERCENT" "TestStep" "{RequestAttribute:TSN}" "OF_INTEREST_RATIO"
 
 ###########################################################################
 # 5: we create Test Step by HTTP Status
@@ -136,4 +136,4 @@ createCalculatedTestMetric "calc:service.testrequestsbyhttpstatus" "Test Request
 ###########################################################################
 # 6: we create Test Step CPU Time
 ###########################################################################
-createCalculatedTestMetric "calc:service.teststepcpu" "Test Step CPU" "CPU_TIME" "MICRO_SECOND" "Test Step" "{RequestAttribute:TSN}" "SUM"
+createCalculatedTestMetric "calc:service.teststepcpu" "Test Step CPU" "CPU_TIME" "MICRO_SECOND" "TestStep" "{RequestAttribute:TSN}" "SUM"

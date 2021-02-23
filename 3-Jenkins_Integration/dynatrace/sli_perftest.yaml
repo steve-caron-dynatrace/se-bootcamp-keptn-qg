@@ -10,7 +10,7 @@ indicators:
   rt_test_echo:             "metricSelector=calc:service.teststepresponsetime:filter(eq(TestStep,echo)):merge(0):avg&entitySelector=tag($svc_tag),type(SERVICE)"
   rt_test_version:          "metricSelector=calc:service.teststepresponsetime:filter(eq(TestStepversion)):merge(0):avg&entitySelector=tag($svc_tag),type(SERVICE)"
   rt_test_homepage:         "metricSelector=calc:service.teststepresponsetime:filter(eq(TestStep,homepage)):merge(0):avg&entitySelector=tag($svc_tag),type(SERVICE)"
-  svcalls_test_invoke:      "metricSelector=calc:service.teststepservicecalls2:filter(eq(TestStep,invoke)):sum&entitySelector=tag($svc_tag),type(SERVICE)"
+  svcalls_test_invoke:      "metricSelector=calc:service.teststepservicecalls:filter(eq(TestStep,invoke)):sum&entitySelector=tag($svc_tag),type(SERVICE)"
   svcalls_test_echo:        "metricSelector=calc:service.teststepservicecalls:filter(eq(TestStep,echo)):merge(0):sum&entitySelector=tag($svc_tag),type(SERVICE)"
   svcalls_test_version:     "metricSelector=calc:service.teststepservicecalls:filter(eq(TestStep,version)):merge(0):sum&entitySelector=tag($svc_tag),type(SERVICE)"
   svcalls_test_homepage:    "metricSelector=calc:service.teststepservicecalls:filter(eq(TestStep,homepage)):merge(0):sum&entitySelector=tag($svc_tag),type(SERVICE)"
